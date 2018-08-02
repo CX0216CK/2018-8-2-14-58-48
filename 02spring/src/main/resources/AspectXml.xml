@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+    <!--目标类型-->
+    <bean id="book" class="cn.wh.AspectXml.IBookImpl"></bean>
+
+    <!--<bean id="BeforeAdvice" class="cn.wh.agent.BeforeAdvice"></bean>-->
+    <bean id="asperct" class="cn.wh.AspectXml.Asperct"></bean>
+    <!--Asperct配置-->
+    <aop:config>
+        <aop:pointcut id="mypoint" expression="execution(* *..AspectXml.*.*(..))"></aop:pointcut>
+        <aop:aspect ref="asperct">
+            <aop:before method="before" pointcut-ref="mypoint"></aop:before>
+            <aop:after method="after" pointcut-ref="mypoint"></aop:after>
+        </aop:aspect>
+
+    </aop:config>
+ </beans>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/cache
+       http://www.springframework.org/schema/cache/spring-cache.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd
+">
+
+    <!--配置jdbc。properties-->
+    <context:property-placeholder location="classpath:jdbc.properties"></context:property-placeholder>
+    <!--数据源-->
+    <bean id="Datesource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${jdbc.driver}"></property>
+        <property name="url" value="${jdbc.url}"></property>
+        <property name="username" value="${jdbc.username}"></property>
+        <property name="password" value="${jdbc.password}"></property>
+    </bean>
+    <!--数据源 jdbcTemplate-->
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="Datesource"></property>
+    </bean>
+    <!--dao-->
+    <bean id="accountdao" class="cn.affair.dao.AccountDaoImpl">
+        <property name="jdbcTemplate" ref="jdbcTemplate"></property>
+    </bean>
+    <bean id="stockdao" class="cn.affair.dao.StockDaoImpl">
+        <property name="jdbcTemplate" ref="jdbcTemplate"></property>
+    </bean>
+    <!--servce-->
+    <bean id="Account" class="cn.affair.service.AccountServiceImpl">
+        <property name="accountdao" ref="accountdao"></property>
+        <property name="stockdao" ref="stockdao"></property>
+    </bean>
+    <!--事务管理器-->
+    <bean id="transationMannger" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+            <property name="dataSource" ref="Datesource"></property>
+    </bean>
+    <!--事务代理工厂-->
+    <!--<bean class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">-->
+        <!--<property name="transactionManager" ref="transationMannger"></property>-->
+        <!--<property name="target" ref="Account"></property>-->
+        <!--<property name="transactionAttributes">-->
+            <!--<props>-->
+                <!--<prop key="addStock">ISOLATION_DEFAULT,PROPAGATION_REQUIRED,-StockException</prop>-->
+
+            <!--</props>-->
+        <!--</property>-->
+    <!--</bean>-->
+<!--注解板-->
+<!--<tx:annotation-driven transaction-manager="transationMannger"></tx:annotation-driven>-->
+    <tx:advice id="txadvice" transaction-manager="transationMannger">
+        <tx:attributes>
+            <tx:method name="updateAccoint" isolation="DEFAULT" propagation="REQUIRED" rollback-for="StockException"/>
+        </tx:attributes>
+    </tx:advice>
+    <aop:config>
+        <aop:pointcut id="mypointccut" expression="execution(* *..cn.affair.service.*.*(..))"></aop:pointcut>
+        <aop:advisor advice-ref="txadvice" pointcut-ref="mypointccut"></aop:advisor>
+    </aop:config>
+ </beans>

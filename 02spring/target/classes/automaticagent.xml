@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+  <bean  id="iDoSomeThing" class="cn.wh.automaticagent.IDoSomeThingImpl"></bean>
+    <bean  id="book" class="cn.wh.automaticagent.IBookImpl"></bean>
+    <!--转配增强-->
+    <bean id="beforeadvies" class="cn.wh.automaticagent.BeforeAdvisor"></bean>
+    <!--顾问-->
+    <bean id="advies" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+        <property  name="advice" ref="beforeadvies"></property>
+        <property name="pattern" value=".*e.*"></property>
+    </bean>
+    <!--自动代理-->
+<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator">
+    <property name="beanName" value="iDoSomeThing,book"></property>
+    <property name="interceptorNames" value="advies"></property>
+</bean>
+ </beans>

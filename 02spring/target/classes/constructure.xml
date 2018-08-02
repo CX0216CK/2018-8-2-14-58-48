@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+<bean id="structure" class="cn.wh.data01.Structure">
+    <constructor-arg index="0" value="我爱你"></constructor-arg>
+    <constructor-arg  index="1" value="20"></constructor-arg>
+</bean>
+    <bean id="stu" class="cn.wh.data01.Structure" p:uname="你爱我" p:age="20"></bean>
+    <!--集合-->
+    <bean id="Collection" class="cn.wh.data01.Collection">
+          <property name="list">
+              <list>
+                  <value>"我"</value>
+                  <value>"爱"</value>
+                  <value>"你"</value>
+              </list>
+          </property>
+        <property name="map">
+            <map>
+            <entry key="第一次">
+                <value>我</value>
+            </entry>
+            </map>
+        </property>
+        <property name="properties">
+        <props>
+            <prop key="properties">properties</prop>
+        </props>
+        </property>
+    </bean>
+</beans>

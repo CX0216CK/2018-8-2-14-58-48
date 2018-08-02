@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+    <!--dao层-->
+    <bean id="dao" class="cn.wh.aopfirst.dao.HelloDaoImpl">
+    </bean>
+    <!--service层-->
+    <bean id="service" class="cn.wh.aopfirst.server.HelloServer">
+        <property name="hello" ref="dao"></property>
+    </bean>
+    <!--通知需要配置-->
+    <bean id="before" class="cn.wh.aopfirst.aop.LoggerBefore"></bean>
+    <bean id="After" class="cn.wh.aopfirst.aop.LoggerAfter"></bean>
+    <aop:config>
+        <!--切点-->
+        <aop:pointcut id="mypointcut" expression=" execution(* *..server.*.*(..))"></aop:pointcut>
+        <!--顾问 可以包装通知-->
+        <aop:advisor advice-ref="before" pointcut-ref="mypointcut"></aop:advisor>
+        <aop:advisor advice-ref="After" pointcut-ref="mypointcut"></aop:advisor>
+    </aop:config>
+
+</beans>

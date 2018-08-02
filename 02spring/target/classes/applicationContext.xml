@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean id="fIrstspring" class="cn.wh.data01.FIrstSpring">
+        <property name="uname" value="呵呵"></property>
+        <property name="secondSpring" ref="secondspring"></property>
+    </bean>
+    <bean id="secondspring" class="cn.wh.data01.SecondSpring">
+            <property name="sex" value="男"></property>
+    </bean>
+
+</beans>

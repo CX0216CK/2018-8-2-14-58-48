@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+    <!--目标类型-->
+    <bean id="Student" class="cn.wh.agent.Student"></bean>
+    <!--增强  通知 Befores-->
+    <!--<bean id="BeforeAdvice" class="cn.wh.agent.BeforeAdvice"></bean>-->
+    <bean id="abnormal" class="cn.wh.agent.Abnormal"></bean>
+    <!--代理工厂 bean-->
+     <bean id="prox" class="org.springframework.aop.framework.ProxyFactoryBean">
+         <property name="target" ref="Student"></property>
+         <property name="interceptorNames" value="abnormal"></property>
+     </bean>
+ </beans>
