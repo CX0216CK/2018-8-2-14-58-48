@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.wh.dao.IUserDao">
+    <resultMap  id="MessageResult" type="cn.wh.entity.User">
+        <id column="uid" jdbcType="INTEGER" property="uid"/>
+        <result column="uname" jdbcType="VARCHAR" property="uname"/>
+        <result column="upwd" jdbcType="VARCHAR" property="upwd"/>
+        <result column="uphone" jdbcType="VARCHAR" property="phone"/>
+    </resultMap>
+
+    <select id="findAll"  resultMap="MessageResult">
+          select * from user
+    </select>
+    <insert id="addUser">
+  INSERT user (uname,upwd,uphone)VALUES(#{uname},#{upwd},#{phone})
+    </insert>
+    <delete id="deleteUser">
+    DELETE from user WHERE uid=#{uid}
+    </delete>
+    <update id="updateUser">
+      UPDATE user set uname=#{uname} WHERE uid=#{uid}
+    </update>
+    <select id="SelectUser" resultMap="MessageResult">
+        select * from user WHERE  uid=1
+    </select>
+        <select id="searchList" parameterType="string" resultMap="MessageResult">
+          select * from user WHERE  uname LIKE concat('%',#{uname},'%')
+    </select>
+    <select id="searchSecondList" parameterType="string" resultMap="MessageResult">
+           select * from user WHERE  uname LIKE '%' #{uname} '%'
+    </select>
+    <insert id="insertReturnId">
+        INSERT user (uname,upwd,uphone)VALUES(#{uname},#{upwd},#{phone})
+        <selectKey resultType="int" keyProperty="uid">
+            SELECT @@identity
+        </selectKey>
+    </insert>
+    <!--第一种多条件查询-->
+
+    <select id="conditionFirst" resultMap="MessageResult">
+      SELECT * from user WHERE  uname LIKE '%' #{uname} '%' and upwd LIKE '%' #{upwd} '%'
+    </select>
+    <!--第二种多条件查询-->
+    <select id="conditionindex" resultMap="MessageResult">
+        SELECT * from user WHERE  uname LIKE '%' #{0} '%' and upwd LIKE '%' #{1} '%'
+    </select>
+    <!--智能标签condition-->
+    <select id="condition" resultMap="MessageResult">
+         SELECT * from user
+         <where>
+             <if test="uname!=null">
+
+             AND uname LIKE '%' #{uname} '%'
+         </if>
+             <if test="upwd!=null">
+
+                 AND upwd LIKE '%' #{upwd} '%'
+             </if>
+         </where>
+    </select>
+    <!--智能标签forearch 数组-->
+    <select id="conditionByforearch" resultMap="MessageResult">
+     SELECT * from user 
+     <where>
+         uid in
+         <foreach collection="array" item="myid" open="(" close=")" separator=",">
+          #{myid}
+         </foreach>
+     </where>
+    </select>
+    <!--智能标签forearch 集合-->
+    <select id="conditionByforearchList" resultMap="MessageResult">
+        SELECT * from user
+        <where>
+            uid in
+            <foreach collection="list" item="myid" open="(" close=")" separator=",">
+                #{myid}
+            </foreach>
+        </where>
+    </select>
+    <!--智能标签forearch 自定义集合-->
+    <select id="conditionByforearchListSecond" resultMap="MessageResult">
+        SELECT * from user
+        <where>
+            uid in
+            <foreach collection="list" item="user" open="(" close=")" separator=",">
+                #{user.uid}
+            </foreach>
+        </where>
+    </select>
+
+</mapper>
+

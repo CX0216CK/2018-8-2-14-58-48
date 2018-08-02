@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+    <!--<settings>-->
+        <!--<setting name="cacheEnabled" value="true"/>&lt;!&ndash;开启，他也是默认值&ndash;&gt;-->
+        <!--&lt;!&ndash;<setting name="cacheEnabled" value="false"/>&ndash;&gt;&lt;!&ndash;关闭&ndash;&gt;-->
+    <!--</settings>-->
+    <!--//延迟加载-->
+    <!--直接加载-->
+    <!--不用配置就是直接加载-->
+    <!--侵入式延迟-->
+    <!--<settings>
+        <setting name="lazyLoadingEnabled" value="true"/>
+        <setting name="aggressiveLazyLoading" value="true"/>
+    </settings>-->
+    <!--深度延迟-->
+    <!--<settings>
+        <setting name="lazyLoadingEnabled" value="true"/>
+        <setting name="aggressiveLazyLoading" value="false"/>
+    </settings>-->
+    <typeAliases>
+        <package name="cn.wh.entity"></package>
+    </typeAliases>
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC">
+                <property name="" value=""/>
+            </transactionManager>
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql:///easybuy_wh"/>
+                <property name="username" value="root1"/>
+                <property name="password" value="0216"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <mappers>
+        <mapper resource="cn/wh/dao/IUserDao.xml"/>
+        <mapper resource="cn/wh/dao/IUserType.xml"/>
+        <mapper resource="cn/wh/dao/IUser.xml"/>
+    </mappers>
+
+</configuration>

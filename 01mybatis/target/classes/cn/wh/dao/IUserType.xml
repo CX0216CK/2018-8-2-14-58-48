@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.wh.dao.IUserType">
+    <resultMap type="cn.wh.entity.UserType" id="UserType">
+        <id column="typeid" jdbcType="INTEGER" property="typeid"/>
+        <result column="typeName" jdbcType="VARCHAR" property="typeName" />
+
+
+        <collection property="users" ofType="cn.wh.entity.User">
+            <id column="uid" jdbcType="INTEGER" property="uid"/>
+            <result column="uname" jdbcType="VARCHAR" property="uname" />
+        </collection>
+    </resultMap>
+
+    <resultMap type="cn.wh.entity.UserType" id="UserType1">
+        <id column="typeid" jdbcType="INTEGER" property="typeid"/>
+        <result column="typeName" jdbcType="VARCHAR" property="typeName" />
+        <collection property="users" ofType="cn.wh.entity.User" select="ss" column="typeid">
+        </collection>
+    </resultMap>
+<select id="listType" resultMap="UserType">
+select user.uid from usertype,user
+where user.typeid=usertype.typeid
+and user.uid='1'
+
+
+</select>
+    <select id="UserTypecondition" resultMap="UserType1">
+         SELECT typeid from  usertype
+        where typeid='1'
+    </select>
+    <select id="ss" resultType="cn.wh.entity.User">
+        SELECT * from user
+        where typeid='1'
+  </select>
+</mapper>
+

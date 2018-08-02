@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.wh.dao.IUser">
+
+    <resultMap id="Users" type="cn.wh.entity.User">
+        <id column="uid" jdbcType="INTEGER" property="uid"/>
+        <result column="uname" jdbcType="VARCHAR" property="uname" />
+        <association property="userType" javaType="cn.wh.entity.UserType">
+            <id column="typeid" jdbcType="INTEGER" property="typeid"/>
+            <result column="typeName" jdbcType="VARCHAR" property="typeName" />
+        </association>
+    </resultMap>
+    <resultMap id="manyUsers" type="cn.wh.entity.User">
+        <id column="uid" jdbcType="INTEGER" property="uid"/>
+        <result column="uname" jdbcType="VARCHAR" property="uname" />
+        <association property="userType" javaType="cn.wh.entity.UserType" column="uid" select="ss">
+        </association>
+    </resultMap>
+<!--多对一-->
+    <select id="findeUser" resultMap="Users">
+    SELECT * from user,usertype where user.typeid=usertype.typeid and user.uid=#{uid}
+    </select>
+    <!--多对多-->
+    <select id="findempmany" resultMap="manyUsers">
+          SELECT uid from user
+        where typeid='1'
+    </select>
+    <select id="ss" resultType="cn.wh.entity.UserType">
+         SELECT * from  usertype
+        where typeid='1'
+    </select>
+
+</mapper>
+
